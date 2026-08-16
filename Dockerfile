@@ -17,17 +17,16 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update --yes --quiet && \
 RUN DEBIAN_FRONTEND=noninteractive locale-gen en_US.UTF-8 && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 ## Create user and ensure no passwd questions during scripts
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo && \
     echo "docker ALL = (root) NOPASSWD: ALL\n" > /etc/sudoers.d/docker && \
     chmod 0440 /etc/sudoers.d/docker
 
-## Add relevant content - to be pruned in the future
-COPY .git /docker/.git
+## Add relevant content
 COPY freeciv /docker/freeciv
 COPY freeciv-proxy /docker/freeciv-proxy
 COPY freeciv-web /docker/freeciv-web
